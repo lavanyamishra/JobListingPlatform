@@ -14,9 +14,24 @@ app.use(cors());
 
 
 
+app.get('/health',(req,res)=>{
+    res.status(200).json({
+        service:"job-listing-server",
+        status:"active",
+        time:new Date(),
+
+    })
+})
+
 app.get('/',(req,res)=>{
     res.send('server connected uccessfully')
 })
+
+
+
+
+
+
 app.listen(process.env.PORT,() => {
     mongoose
       .connect(process.env.MONGODB_URL)
