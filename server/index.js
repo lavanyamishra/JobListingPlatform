@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 var cors = require('cors');
 const dotenv = require('dotenv');
+
+
 dotenv.config();
 
 const app = express();
@@ -12,29 +14,30 @@ app.use(bodyParser.json())
 app.use(express.static('./public'))
 app.use(cors());
 
+const authRoutes = require('./Routes/auth');
 
 
-app.get('/health',(req,res)=>{
+app.get('/health', (req, res) => {
     res.status(200).json({
-        service:"job-listing-server",
-        status:"active",
-        time:new Date(),
+        service: "job-listing-server",
+        status: "active",
+        time: new Date(),
 
     })
 })
 
-app.get('/',(req,res)=>{
-    res.send('server connected uccessfully')
+app.get('/', (req, res) => {
+    res.send('server connected successfully')
 })
 
 
+//Register Routes
+app.use(authRoutes);
 
 
-
-
-app.listen(process.env.PORT,() => {
+app.listen(process.env.PORT, () => {
     mongoose
-      .connect(process.env.MONGODB_URL)
-      .then(() => console.log(`Server running on http://localhost:${process.env.PORT}`))
-      .catch(error => console.log(error));
-  })
+        .connect(process.env.MONGODB_URL)
+        .then(() => console.log(`Server running on http://localhost:${process.env.PORT}`))
+        .catch(error => console.log(error));
+})
