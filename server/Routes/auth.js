@@ -54,13 +54,10 @@ router.post("/login", async (req, res) => {
         if (!passwordMatch) {
             return res.status(401).send({ error: "Incorrect password" });
         }
-        else {
-            return res.send({ message: "correct Email or password" });
-        }
-        // const token = await jwt.sign((user._id).toJSON(), process.env.JWT_KEY);
 
-        // res.send({ token: token, name: user.name });
+        const token = await jwt.sign((user._id).toJSON(), process.env.JWT_KEY);
 
+        res.send({ token: token, name: user.name });
     } catch (error) {
         console.log(error);
     }

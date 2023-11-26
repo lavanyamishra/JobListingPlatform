@@ -3,7 +3,8 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 var cors = require('cors');
 const dotenv = require('dotenv');
-
+const authRoutes = require('./Routes/auth');
+const jobRoutes = require("./Routes/job");
 
 dotenv.config();
 
@@ -14,7 +15,7 @@ app.use(bodyParser.json())
 app.use(express.static('./public'))
 app.use(cors());
 
-const authRoutes = require('./Routes/auth');
+
 
 
 app.get('/health', (req, res) => {
@@ -33,6 +34,14 @@ app.get('/', (req, res) => {
 
 //Register Routes
 app.use(authRoutes);
+app.use(jobRoutes);
+
+// Error handler middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ error: 'Internal Server Error' });
+});
+
 
 
 app.listen(process.env.PORT, () => {
